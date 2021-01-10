@@ -1,34 +1,36 @@
-{ 
-  "name": "pimatic-plugin-template",
-  "description": "The plugin description",
-  "author": "Your Name <you@example.com> (http://your-website)",
+{
+  "name": "pimatic-switchbot",
+  "description": "Pimatic plugin for the Switchbot API",
+  "author": "Patrick Carl <patrick@carl.it> (http://www.carl.it)",
   "license": "GPL-2.0",
-  "main": "my-plugin",
+  "main": "switchbot.coffee",
   "files": [
-    "my-plugin.coffee",
+    "switchbot.coffee",
     "README.md",
     "LICENSE",
-    "my-plugin-config-schema.coffee"
+    "switchbot-config-schema.coffee",
+    "device-config-schema.coffee"
   ],
   "keywords": [
     "pimatic",
     "pimatic-plugin"
   ],
-  "version": "0.9.0",
-  "homepage": "http://your-plugin-website",
+  "version": "0.0.1",
+  "homepage": "https://github.com/carlptr/node-switchbot",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git://github.com/pimatic/pimatic-plugin-template.git"
+    "url": "git://github.com/carlptr/pimatic-switchbot.git"
   },
-  "configSchema": "my-plugin-config-schema.coffee",
+  "configSchema": "switchbot-config-schema.coffee",
   "dependencies": {
+    "got": "^11.8.1"
   },
   "peerDependencies": {
     "pimatic": "0.9.*"
   },
   "engines": {
-    "node": ">=4",
-    "npm": ">=2"
+    "node": ">=10",
+    "npm": ">=6"
   }
 }
