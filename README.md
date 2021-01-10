@@ -1,12 +1,13 @@
-pimatic-plugin-template
+pimatic-switchbot
 =======================
 
-See the [development guide](https://pimatic.teamemo.com/Development) for
-details.
+This plugin for [Pimatic](https://pimatic.org) allows to control [Switch Bots](https://www.switch-bot.com) via the [Switch Bot API](https://github.com/OpenWonderLabs/SwitchBotAPI)
 
-Some Tips:
+### Requirements
+* Get a API token from the Switch Bot app, see https://github.com/OpenWonderLabs/SwitchBotAPI#getting-started 
+* Install this plug to your pimatic environment
 
-### Adding package dependencies
+### Usage
 * You can add other package dependencies by running `npm install something --save`. With the `--save`
   option npm will auto add the installed dependency in your `package.json`
 * You can always install all dependencies in the package.json with `npm install`
