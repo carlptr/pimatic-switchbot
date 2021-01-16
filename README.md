@@ -4,15 +4,9 @@ pimatic-switchbot
 This plugin for [Pimatic](https://pimatic.org) allows to control [Switch Bots](https://www.switch-bot.com) via the [Switch Bot API](https://github.com/OpenWonderLabs/SwitchBotAPI)
 
 ### Requirements
-* Get a API token from the Switch Bot app, see https://github.com/OpenWonderLabs/SwitchBotAPI#getting-started 
+* Get a API token from the Switch Bot app, see https://github.com/OpenWonderLabs/SwitchBotAPI#getting-started. Please note that you need a SwitchBot hub and the bots to control must be cloud-enabled. 
 * Install this plug to your pimatic environment
+* Configure the API token in the plugin configuration.
 
 ### Usage
-* You can add other package dependencies by running `npm install something --save`. With the `--save`
-  option npm will auto add the installed dependency in your `package.json`
-* You can always install all dependencies in the package.json with `npm install`
-
-### Commit your changes to git
-* Add all edited files with `git add file`. For example: `git add package.json` then commit you changes 
-  with `git commit`.
-* After that you can push you commited work to github: `git push`
+* This plugin provdes a device SwitchBot. Through the property *botId* you specify the corresponding bot. Discovering bots is supported.

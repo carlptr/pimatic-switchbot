@@ -21,6 +21,8 @@ module.exports = (env) ->
   assert = env.require 'cassert'
   got = require 'got'
 
+  BaseUrl = 'https://api.switch-bot.com/v1.0'
+
   # Include your own depencies with nodes global require function:
   #  
   #     someThing = require 'someThing'
@@ -41,13 +43,42 @@ module.exports = (env) ->
     #     
     # 
     init: (app, @framework, @config) =>
-      env.logger.info("Hello World")
+      if(@config.debug)
+        env.logger.debug('Init of pimatic-switchbot')
       deviceConfigDef = require('./device-config-schema')
       @framework.deviceManager.registerDeviceClass("SwitchBot", {
         configDef: deviceConfigDef.SwitchBot,
         createCallback: (config) => 
           return new SwitchBotDevice(config, this)
       })
+
+      # auto discovery
+      @framework.deviceManager.on('discover', (eventData) =>
+        @framework.deviceManager.discoverMessage(
+          'pimatic-switchbot', "Scanning for SwitchBot devices"
+        )
+        options = {
+          'headers': {'Authorization': @config.apiKey} 
+        }
+
+        #got(BaseUrl + '/devices', options).json()
+        got(BaseUrl + '/devices/', options).json()
+        .then (result) =>
+          if(@config.debug)
+            env.logger.debug(JSON.stringify(result.body));
+          for device in result.body.deviceList
+            if(device.deviceType == 'Bot')
+              config = {
+              class: 'SwitchBot',
+              id: "bot-" + device.deviceId,
+              botId: device.deviceId
+              }
+              @framework.deviceManager.discoveredDevice('pimatic-switchbot',
+                "SwitchBot " + device.deviceName + " (#" + device.deviceId + ")", config
+              )
+        .catch (error) ->
+          env.logger.error("Error on searching switchbots " + error)
+      )
 
   class SwitchBotDevice extends env.devices.SwitchActuator
 
@@ -59,7 +90,8 @@ module.exports = (env) ->
 
     #Performs a press with the SwitchBot
     changeStateTo: (state) ->
-      env.logger.info("SwitchBot " + @name + " (" + @botId + ") pressed.")
+      if(@config.debug)
+        env.logger.debug("SwitchBot " + @name + " (" + @botId + ") pressed.")
       command = {
         command: "press",
         parameter: "default",
@@ -75,14 +107,9 @@ module.exports = (env) ->
         responseType: 'json'
       }
 
-      got('https://api.switch-bot.com/v1.0/devices/' + @botId + '/commands', options)
+      got(BaseUrl + '/devices/' + @botId + '/commands', options).json()
         .then (result) =>
-          message = result.body.message
-          if(message != "success")
-            env.logger.error('Sending press command failed ' + result.body.statusCode)
-          else if(@plugin.config.debug)
-            env.logger.debug('Command sent successfully') 
-          Promise.resolve()
+          Promise.resolve(result.body.message)
       
       #  .then (body) =>
       #    env.logger.info('Press command sent')
