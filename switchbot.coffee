@@ -65,7 +65,9 @@ module.exports = (env) ->
         got(BaseUrl + '/devices/', options).json()
         .then (result) =>
           if(@config.debug)
-            env.logger.debug(JSON.stringify(result.body));
+            env.logger.debug(JSON.stringify(result));
+          if(result.statusCode != 100)
+            throw new Error(result.message + ' ' + result.statusCode)
           for device in result.body.deviceList
             if(device.deviceType == 'Bot')
               config = {
@@ -109,7 +111,9 @@ module.exports = (env) ->
 
       got(BaseUrl + '/devices/' + @botId + '/commands', options).json()
         .then (result) =>
-          Promise.resolve(result.body.message)
+          if(result.statusCode != 100)
+            throw new Error(result.message + ' ' + result.statusCode)
+          Promise.resolve(result.body)
       
       #  .then (body) =>
       #    env.logger.info('Press command sent')
