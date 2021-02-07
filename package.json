@@ -16,7 +16,7 @@
     "pimatic-plugin"
   ],
   "version": "0.0.3",
-  "homepage": "https://github.com/carlptr/node-switchbot",
+  "homepage": "https://github.com/carlptr/pimatic-switchbot",
   "private": false,
   "repository": {
     "type": "git",
